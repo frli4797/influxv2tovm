@@ -1,15 +1,15 @@
 ## Migrate data from InfluxDB v2 to VictoriaMetrics with Home Assistant support
 This project provides a Python script to import data from InfluxDB >=2.0 to VictoriaMetrics and is highly inspired and developed originally from
-https://github.com/jonppe/influx_to_victoriametrics/ and then significant extra work, including [Home Assistant](https://www.home-assistant.io) support, from Fredrik J-L at https://github.com/frli4797/influxv2tovm/
+https://github.com/jonppe/influx_to_victoriametrics/ and then significant extra work, including [Home Assistant](https://www.home-assistant.io) support.
 
 The [command line tool](https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/docs/vmctl.md) packaged with VictoriaMetrics provides similar features for InfluxDB 1.X, although without specific support for Home Assistant.
 
 Every unique time series is queried one by one and exported to VictoriaMetrics. For large datasets the metrics are broken into chunks of 5000 and submitted in batches using the legacy Influx [Line Protocol API](https://archive.docs.influxdata.com/influxdb/v0.9/write_protocols/write_syntax/).
 
-## About this fork
-This project is a fork based on the [fri4797](https://github.com/frli4797/influxv2tovm) fork of the original project developed by [jonppe](https://github.com/jonppe/influx_to_victoriametrics/). The initial project was designed to migrate multiple InfluxDB v2 buckets into a single VictoriaMetrics DB each annotated with a key designating the DB source for delineation. The limitations of that version is that the migration was done by entire metric and in a sufficiently large dataset a single metric could exceed the resources of the runtime.
+## About this version
+This version is based on a fork on this repo on the [maxlyth](https://github.com/maxlyth/influxv2tovm) fork of the original project developed by [jonppe](https://github.com/jonppe/influx_to_victoriametrics/). The initial project was designed to migrate multiple InfluxDB v2 buckets into a single VictoriaMetrics DB each annotated with a key designating the DB source for delineation. The limitations of that version is that the migration was done by entire metric and in a sufficiently large dataset a single metric could exceed the resources of the runtime.
 
-The original project was forked by Fredrick J-L in summer 2024 where it was substantially reworked to add chunking of the data into controlled transaction sizes and support for InfluxDBs populated with [Home Assistant](https://www.home-assistant.io) data. Home Assistant (HA) is a home automation system that generates many data points stored in a SQL DB and it is not unusual for deployers to supplement the SQL DB with a time series DB for historical data, usually InfluxDB v1 or v2.
+The original project was forked in summer 2024 where it was substantially reworked to add chunking of the data into controlled transaction sizes and support for InfluxDBs populated with [Home Assistant](https://www.home-assistant.io) data. Home Assistant (HA) is a home automation system that generates many data points stored in a SQL DB and it is not unusual for deployers to supplement the SQL DB with a time series DB for historical data, usually InfluxDB v1 or v2. Subsequently to this maxlyth forked this repo to fix some mistakes with escaping special characters in Line Protocol as well as other improvements. These changes were then merged back into this repository to avoid diverging forks, with the original (this) containing some major mistakes. 
 
 As Influx has pivoted to enterprise customers, many HA users have been inspired by the [VictoriaMetrics Add-on](https://github.com/fuslwusl/homeassistant-addon-victoriametrics) developed by fuslwusl to use VictoriaMetrics (VM) as it more closely matched the use case. The HA integration is highly configurable and other integrations can provide metrics leading to a highly diverse dataset.
 
@@ -73,11 +73,10 @@ If you are using the [VictoriaMetrics Addon](https://github.com/fuslwusl/homeass
 ./influxv2tovm.py --pivot --dry-run home_assistant
 ~~~~
 
-If this execution looks good then simply re-run the above command omitting the `--dry-run` parameter.
 
 ---
 Author: Max Lyth
 
-Thanks to: Johannes Aalto & Fredrik J-L
+Thanks to: Johannes Aalto & maxlyth
 
 SPDX-License-Identifier: Apache-2.0
