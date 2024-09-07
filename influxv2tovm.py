@@ -185,6 +185,15 @@ class InfluxMigrator:
            |> first()"""
         timeseries: List[pd.DataFrame] = self.__query_api.query_data_frame(first_in_series)
 
+        # query_data_frame() sometimes returns a list and sometimes just a Dataframe.
+        # we need to ensure that we have a list.
+        if type(timeseries) is pd.DataFrame:
+            timeseries = [timeseries]
+        elif type(timeseries) is not List:
+            print(f"We have a problem. The resulting of the query is neither list nor Dataframe.")
+            print(f"The type is: {type(timeseries)} Object: {timeseries}")
+            exit(500)
+
         measurements_and_fields = set()
         for df in timeseries:
             measurements_and_fields.update(df[self.__measurement_key].unique())
