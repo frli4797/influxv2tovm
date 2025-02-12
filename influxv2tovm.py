@@ -4,7 +4,6 @@
 
  SPDX-License-Identifier: Apache-2.0
 """
-import datetime
 import logging
 import os
 import warnings
@@ -189,7 +188,7 @@ class InfluxMigrator:
         # we need to ensure that we have a list.
         if type(timeseries) is pd.DataFrame:
             timeseries = [timeseries]
-        elif type(timeseries) is not List:
+        elif type(timeseries) is not list:
             print(f"We have a problem. The resulting of the query is neither list nor Dataframe.")
             print(f"The type is: {type(timeseries)} Object: {timeseries}")
             exit(500)
